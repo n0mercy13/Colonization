@@ -1,20 +1,42 @@
-﻿using Codebase.Logic;
-using Codebase.StaticData;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Codebase.Logic;
+using Codebase.StaticData;
 
 namespace Codebase.Infrastructure
 {
     public partial class BasesHandler
     {
         private readonly IGameFactory _gameFactory;
+        private readonly IInputService _gameInputService;
+        private readonly IRaycastService _raycastService;
         private readonly int _initialUnitsOnBase;
         private readonly Vector3 _initialPosition;
+        private readonly List<Crystal> _crystals;
 
-        public BasesHandler(IGameFactory gameFactory, GameConfig gameConfig, SceneData sceneData)
+        public BasesHandler(
+            IGameFactory gameFactory, 
+            IInputService gameInputService, 
+            IRaycastService raycastService, 
+            GameConfig gameConfig, 
+            SceneData sceneData)
         {
             _gameFactory = gameFactory;
+            _gameInputService = gameInputService;
+            _raycastService = raycastService;
             _initialUnitsOnBase = gameConfig.InitialUnitsOnBase;
             _initialPosition = sceneData.InitialBaseLocation.position;
+            _crystals = new List<Crystal>(gameConfig.InitialCrystals);
+
+            _gameInputService.Selected += OnSelected;
+        }
+
+        private void OnSelected(Vector2 mouseScreenPosition)
+        {
+            if(_raycastService.TryScanCrystals(
+                mouseScreenPosition, out List<Crystal> crystals))
+                    _crystals.AddRange(crystals);
         }
     }
 
@@ -28,6 +50,14 @@ namespace Codebase.Infrastructure
             {
                 Unit unit = _gameFactory.Create<Unit>(@base.transform.position);
             }
+        }
+    }
+
+    public partial class BasesHandler : IDisposable
+    {
+        public void Dispose()
+        {
+            _gameInputService.Selected -= OnSelected;
         }
     }
 }

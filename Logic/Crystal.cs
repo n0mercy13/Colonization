@@ -18,7 +18,7 @@ namespace Codebase.Logic
         private void Construct(GameConfig gameConfig)
         {
             _endColor = gameConfig.CrystalScannedColor;
-            _duration = 2.0f;
+            _duration = 1.0f;
             
             _materials = new Material[_renders.Length];
 
