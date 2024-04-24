@@ -46,5 +46,8 @@ public class GameLifetimeScope : LifetimeScope
         builder
             .Register<InputService>(Lifetime.Singleton)
             .AsImplementedInterfaces();
+        builder
+            .Register<RaycastService>(Lifetime.Singleton)
+            .AsImplementedInterfaces();
     }
 }
