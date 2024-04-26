@@ -5,7 +5,7 @@ using Codebase.StaticData;
 
 namespace Codebase.Infrastructure
 {
-    public partial class ResourcesHandler
+    public partial class CrystalsHandler
     {
         private readonly IGameFactory _gameFactory;
         private readonly IRandomService _randomService;
@@ -14,7 +14,7 @@ namespace Codebase.Infrastructure
         private readonly Vector3 _boundaryPoint2;
         private readonly int _initialCrystals;
 
-        public ResourcesHandler(IGameFactory gameFactory, IRandomService randomService, GameConfig gameConfig, SceneData sceneData)
+        public CrystalsHandler(IGameFactory gameFactory, IRandomService randomService, GameConfig gameConfig, SceneData sceneData)
         {
             _gameFactory = gameFactory;
             _randomService = randomService;
@@ -25,7 +25,7 @@ namespace Codebase.Infrastructure
         }
     }
 
-    public partial class ResourcesHandler : IInitializable
+    public partial class CrystalsHandler : IInitializable
     {
         public void Initialize()
         {

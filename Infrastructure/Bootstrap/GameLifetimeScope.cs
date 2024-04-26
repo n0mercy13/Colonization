@@ -32,7 +32,7 @@ public class GameLifetimeScope : LifetimeScope
             .Register<GameFactory>(Lifetime.Singleton)
             .AsImplementedInterfaces();
         builder
-            .Register<ResourcesHandler>(Lifetime.Singleton)
+            .Register<CrystalsHandler>(Lifetime.Singleton)
             .AsImplementedInterfaces();
         builder
             .Register<BasesHandler>(Lifetime.Singleton)

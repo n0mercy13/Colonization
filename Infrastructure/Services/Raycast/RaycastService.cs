@@ -54,7 +54,6 @@ namespace Codebase.Infrastructure
                 if (_results[i].TryGetComponent(out _crystal)
                     && _crystal.IsScanned == false)
                 {
-                    _crystal.SetScanned();
                     crystals.Add(_crystal);
                 }
             }

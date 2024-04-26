@@ -8,6 +8,7 @@ namespace Codebase.StaticData
     {
         [field: SerializeField] public Camera Camera { get; private set; }
         [field: SerializeField] public Ground Ground { get; private set; }
+        [field: SerializeField] public RectTransform ViewRoot { get; private set; }
         [field: SerializeField] public Transform InitialBaseLocation { get; private set; }
 
         private void OnValidate()
@@ -17,6 +18,9 @@ namespace Codebase.StaticData
 
             if (Ground == null)
                 throw new ArgumentNullException(nameof(Ground));
+
+            if(ViewRoot == null)
+                throw new ArgumentNullException(nameof(ViewRoot));
 
             if (InitialBaseLocation == null)
                 throw new ArgumentNullException(nameof(InitialBaseLocation));
