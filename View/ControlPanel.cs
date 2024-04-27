@@ -19,6 +19,11 @@ namespace Codebase.View
         private Tweener _scanButtonAnimation;
         private Tweener _collectButtonAnimation;
 
+        public event Action<bool> CollectPressed = delegate { };
+
+        public bool IsScanActive { get; private set; }
+        public bool IsCollectActive { get; private set; }
+
         private void OnValidate()
         {
             if (_scanButton == null)
@@ -48,11 +53,6 @@ namespace Codebase.View
             _scanButtonAnimation.Kill();
             _collectButtonAnimation.Kill();
         }
-
-        public bool IsScanActive { get; private set; }
-        public bool IsCollectActive { get; private set; }
-
-        public event Action<bool> CollectPressed = delegate { };
 
         public void UpdateCrystalInfo(int crystalsCount) =>
             _crystalsLabel.text = $"Crystals : {crystalsCount:D3}";

@@ -31,6 +31,14 @@ namespace Codebase.Logic
             _checkDelay = new WaitForSeconds(delay);
         }
 
+        public event Action<int> CrystalCollected = delegate { };
+
+        public bool CanCollect =>
+            TryGetUnit(out _) && _hasScannedCrystals;
+
+        private bool _hasScannedCrystals =>
+            _scannedCrystals.Count > 0;
+
         private void OnValidate()
         {
             if (_spawnPoint == null)
@@ -40,7 +48,7 @@ namespace Codebase.Logic
         private void OnTriggerEnter(Collider other)
         {
             if(other.TryGetComponent(out _crystal))
-                OnCrystalArrived(_crystal);
+                AcceptCrystal(_crystal);
         }
 
         private void OnDisable()
@@ -48,11 +56,6 @@ namespace Codebase.Logic
             if (_collectCrystalsCoroutine != null)
                 StopCoroutine(_collectCrystalsCoroutine);
         }
-
-        public bool CanCollect => 
-            TryGetUnit(out _) && HasScannedCrystals();
-
-        public event Action<int> CrystalCollected = delegate { };
 
         public void AddScannedCrystals(List<Crystal> crystals)
         {
@@ -79,7 +82,7 @@ namespace Codebase.Logic
 
         private IEnumerator CollectCrystalsAsync()
         {
-            while (HasScannedCrystals())
+            while (_hasScannedCrystals)
             {
                 if (TryGetUnit(out _unit))
                 {
@@ -90,9 +93,6 @@ namespace Codebase.Logic
                 yield return _checkDelay;
             }
         }
-
-        private bool HasScannedCrystals() =>
-            _scannedCrystals.Count > 0;
 
         private bool TryGetUnit(out Unit standbyUnit)
         {
@@ -109,7 +109,7 @@ namespace Codebase.Logic
             return false;
         }
 
-        private void OnCrystalArrived(Crystal crystal)
+        private void AcceptCrystal(Crystal crystal)
         {
             _crystalsCount++;
             CrystalCollected.Invoke(_crystalsCount);

@@ -26,13 +26,13 @@ namespace Codebase.Logic
                 _materials[i] = _renders[i].material;
         }
 
+        public bool IsScanned { get; private set; } = false;
+
         private void OnValidate()
         {
             if(_renders == null)
                 throw new ArgumentNullException(nameof(_renders));
         }
-
-        public bool IsScanned { get; private set; } = false;
 
         public void SetScanned()
         {

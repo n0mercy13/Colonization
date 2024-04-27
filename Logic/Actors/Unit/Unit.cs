@@ -13,6 +13,8 @@ namespace Codebase.Logic
         private Transform _target;
         private Vector3 _basePosition;
 
+        public UnitStateTypes State { get; private set; } = UnitStateTypes.Standby;
+
         private void OnValidate()
         {
             if(_collectPoint == null)
@@ -23,8 +25,6 @@ namespace Codebase.Logic
         {
             _basePosition = transform.position;
         }
-
-        public UnitStateTypes State { get; private set; } = UnitStateTypes.Standby;
 
         public void Collect(Crystal crystal)
         {
@@ -55,6 +55,7 @@ namespace Codebase.Logic
         private void CollectCrystal(Transform crystal)
         {
             crystal.SetParent(_collectPoint);
+            crystal.localPosition = Vector3.zero;
 
             ReturnToBaseAsync(BaseReturned);
         }

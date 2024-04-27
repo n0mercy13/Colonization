@@ -8,6 +8,11 @@ namespace Codebase.Logic
         [SerializeField] private Transform _boundaryPoint1;
         [SerializeField] private Transform _boundaryPoint2;
 
+        public Vector3 BoundaryPoint1 => 
+            _boundaryPoint1.position;
+        public Vector3 BoundaryPoint2 => 
+            _boundaryPoint2.position;
+
         private void OnValidate()
         {
             if(_boundaryPoint1 == null)
@@ -16,8 +21,5 @@ namespace Codebase.Logic
             if( _boundaryPoint2 == null)
                 throw new ArgumentNullException(nameof(_boundaryPoint2));
         }
-
-        public Vector3 BoundaryPoint1 => _boundaryPoint1.position;
-        public Vector3 BoundaryPoint2 => _boundaryPoint2.position;
     }
 }
