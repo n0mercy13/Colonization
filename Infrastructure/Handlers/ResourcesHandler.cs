@@ -25,7 +25,7 @@ namespace Codebase.Infrastructure
         }
     }
 
-    public partial class CrystalsHandler : IInitializable
+    public partial class CrystalsHandler : IInitialize
     {
         public void Initialize()
         {

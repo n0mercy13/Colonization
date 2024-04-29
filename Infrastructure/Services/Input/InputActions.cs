@@ -32,7 +32,25 @@ namespace Codebase.Infrastructure
                 {
                     ""name"": ""Select"",
                     ""type"": ""Button"",
+                    ""id"": ""1240f302-b922-4228-a4ff-c0e64843e858"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Scan"",
+                    ""type"": ""Button"",
                     ""id"": ""3ea6b2dd-5f7e-4155-85bc-1bbbb58534af"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Build"",
+                    ""type"": ""Button"",
+                    ""id"": ""fd2db0ad-cdbf-4740-b624-b97e2674b668"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -42,12 +60,34 @@ namespace Codebase.Infrastructure
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""bb3138bc-e763-4310-81c2-662f110178b8"",
+                    ""id"": ""05e2f483-8ef1-4d07-81df-a2dc68d6295a"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""MultiTap"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bb3138bc-e763-4310-81c2-662f110178b8"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Scan"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f3494ce3-5e20-478a-9bfa-3fbf6a036a95"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Build"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -76,6 +116,8 @@ namespace Codebase.Infrastructure
             // Gameplay
             m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
             m_Gameplay_Select = m_Gameplay.FindAction("Select", throwIfNotFound: true);
+            m_Gameplay_Scan = m_Gameplay.FindAction("Scan", throwIfNotFound: true);
+            m_Gameplay_Build = m_Gameplay.FindAction("Build", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -138,11 +180,15 @@ namespace Codebase.Infrastructure
         private readonly InputActionMap m_Gameplay;
         private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
         private readonly InputAction m_Gameplay_Select;
+        private readonly InputAction m_Gameplay_Scan;
+        private readonly InputAction m_Gameplay_Build;
         public struct GameplayActions
         {
             private @InputActions m_Wrapper;
             public GameplayActions(@InputActions wrapper) { m_Wrapper = wrapper; }
             public InputAction @Select => m_Wrapper.m_Gameplay_Select;
+            public InputAction @Scan => m_Wrapper.m_Gameplay_Scan;
+            public InputAction @Build => m_Wrapper.m_Gameplay_Build;
             public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -155,6 +201,12 @@ namespace Codebase.Infrastructure
                 @Select.started += instance.OnSelect;
                 @Select.performed += instance.OnSelect;
                 @Select.canceled += instance.OnSelect;
+                @Scan.started += instance.OnScan;
+                @Scan.performed += instance.OnScan;
+                @Scan.canceled += instance.OnScan;
+                @Build.started += instance.OnBuild;
+                @Build.performed += instance.OnBuild;
+                @Build.canceled += instance.OnBuild;
             }
 
             private void UnregisterCallbacks(IGameplayActions instance)
@@ -162,6 +214,12 @@ namespace Codebase.Infrastructure
                 @Select.started -= instance.OnSelect;
                 @Select.performed -= instance.OnSelect;
                 @Select.canceled -= instance.OnSelect;
+                @Scan.started -= instance.OnScan;
+                @Scan.performed -= instance.OnScan;
+                @Scan.canceled -= instance.OnScan;
+                @Build.started -= instance.OnBuild;
+                @Build.performed -= instance.OnBuild;
+                @Build.canceled -= instance.OnBuild;
             }
 
             public void RemoveCallbacks(IGameplayActions instance)
@@ -191,6 +249,8 @@ namespace Codebase.Infrastructure
         public interface IGameplayActions
         {
             void OnSelect(InputAction.CallbackContext context);
+            void OnScan(InputAction.CallbackContext context);
+            void OnBuild(InputAction.CallbackContext context);
         }
     }
 }

@@ -5,9 +5,9 @@ namespace Codebase.Infrastructure
 {
     public partial class Bootstrap
     {
-        private readonly IReadOnlyList<IInitializable> _initializables;
+        private readonly IReadOnlyList<IInitialize> _initializables;
 
-        public Bootstrap(IReadOnlyList<IInitializable> initializables)
+        public Bootstrap(IReadOnlyList<IInitialize> initializables)
         {
             _initializables = initializables;
         }
@@ -17,7 +17,7 @@ namespace Codebase.Infrastructure
     {
         public void Start()
         {
-            foreach (IInitializable initializable in _initializables)
+            foreach (IInitialize initializable in _initializables)
                 initializable.Initialize();
         }
     }

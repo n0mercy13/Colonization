@@ -14,6 +14,8 @@ namespace Codebase.Infrastructure
             _inputs.Enable();
 
             _inputs.Gameplay.Select.performed += OnSelectPerformed;
+            _inputs.Gameplay.Scan.performed += OnScanPerformed;
+            _inputs.Gameplay.Build.performed += OnBuildPerformed;
         }
 
         private Vector2 _mouseScreenPosition =>
@@ -22,13 +24,27 @@ namespace Codebase.Infrastructure
         private void OnSelectPerformed(InputAction.CallbackContext context)
         {
             if (context.phase.Equals(InputActionPhase.Performed))
-                Selected.Invoke(_mouseScreenPosition);
+                SelectBasePressed.Invoke(_mouseScreenPosition);
+        }
+
+        private void OnScanPerformed(InputAction.CallbackContext context)
+        {
+            if (context.phase.Equals(InputActionPhase.Performed))
+                ScanPressed.Invoke(_mouseScreenPosition);
+        }
+
+        private void OnBuildPerformed(InputAction.CallbackContext context)
+        {
+            if (context.phase.Equals(InputActionPhase.Performed))
+                BuildPressed.Invoke(_mouseScreenPosition);
         }
     }
 
     public partial class InputService : IInputService
     {
-        public event Action<Vector2> Selected = delegate { };
+        public event Action<Vector2> SelectBasePressed = delegate { };
+        public event Action<Vector2> ScanPressed = delegate { };
+        public event Action<Vector2> BuildPressed = delegate { };
     }
 
     public partial class InputService : IDisposable
@@ -36,6 +52,8 @@ namespace Codebase.Infrastructure
         public void Dispose()
         {
             _inputs.Gameplay.Select.performed -= OnSelectPerformed;
+            _inputs.Gameplay.Scan.performed -= OnScanPerformed;
+            _inputs.Gameplay.Build.performed -= OnBuildPerformed;
         }
     }
 }

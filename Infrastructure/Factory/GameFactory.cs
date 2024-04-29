@@ -15,7 +15,8 @@ namespace Codebase.Infrastructure
         private readonly Unit _unitPrefab;
         private readonly Base _basePrefab;
         private readonly Crystal _crystalPrefab;
-        private readonly ControlPanel _controlPanel;
+        private readonly ControlPanel _controlPanelPrefab;
+        private readonly BuildMarker _buildMarkerPrefab;
         private readonly RectTransform _viewRoot;
         private readonly string _unitParentName = "Units";
         private readonly string _baseParentName = "Bases";
@@ -30,7 +31,8 @@ namespace Codebase.Infrastructure
             _unitPrefab = gameConfig.UnitPrefab;
             _basePrefab = gameConfig.BasePrefab;
             _crystalPrefab = gameConfig.CristalPrefab;
-            _controlPanel = gameConfig.ControlPanelPrefab;
+            _controlPanelPrefab = gameConfig.ControlPanelPrefab;
+            _buildMarkerPrefab = gameConfig.BuildMarkerPrefab;
             _viewRoot = sceneData.ViewRoot;
         }
     }
@@ -66,6 +68,11 @@ namespace Codebase.Infrastructure
                 parent = _crystalsParent;
                 prefab = _crystalPrefab as TObject;
             }
+            else if (typeof(TObject).Equals(typeof(BuildMarker)))
+            {
+                parent = _baseParent;
+                prefab = _buildMarkerPrefab as TObject;
+            }
             else
             {
                 throw new InvalidOperationException(
@@ -81,7 +88,7 @@ namespace Codebase.Infrastructure
 
             if (typeof(TView).Equals(typeof(ControlPanel)))
             {
-                prefab = _controlPanel as TView;
+                prefab = _controlPanelPrefab as TView;
             }
             else
             {

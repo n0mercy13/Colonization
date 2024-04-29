@@ -1,6 +1,6 @@
 ﻿namespace Codebase.Infrastructure
 {
-    public interface IInitializable
+    public interface IInitialize
     {
         void Initialize();  
     }
